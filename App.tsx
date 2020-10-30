@@ -13,7 +13,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen 
-        name="Login Placeholder"
+        name="Login Page"
         component={LandingScreen}
         />
         <Stack.Screen
