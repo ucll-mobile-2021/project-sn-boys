@@ -2,8 +2,9 @@ import React from 'react'
 import { View, Text, StyleSheet, Button, Alert,  } from 'react-native'
 import { EventScreen } from './EventScreen'
 import { StackScreenProps } from '@react-navigation/stack';
+import { NavigationProp } from '@react-navigation/native';
 
-export const LandingScreen = ({navigation}) => {
+export const LandingScreen = ({navigation}: any) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Welkom</Text>
