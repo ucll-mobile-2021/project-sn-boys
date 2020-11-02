@@ -8,8 +8,8 @@ export const LandingScreen = ({navigation}:any) => {
         <View style={styles.maincontainer}>
             <ImageBackground source="https://www.evenementorganiseren.nl/public/image/artikelen/2016/20180802-messe_luzern_corporate_event.jpg" style={styles.image} blurRadius={6}>
                     <View style={styles.nestedContainer}>
-                        <Text style={styles.title}>Find an event in your area</Text>
-                        <Button onPress={() => navigation.navigate('Evenementen', {name: 'Roel'})} title="Login with Facebook"></Button>
+                        <Text style={styles.title}>Maak een afspraak</Text>
+                        <Button onPress={() => navigation.navigate('Afspraken')} title="Bekijk je afspraken"></Button>
                     </View>
             </ImageBackground>
         </View>
