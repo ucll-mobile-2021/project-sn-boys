@@ -28,19 +28,33 @@ const AddAfspraak: React.FC = () => {
     }
 
     return (
-        <View style={styles.inputContainer}>
-        <Text style={styles.label}>Titel</Text>
-        <TextInput style={styles.input} onChangeText={text => onChangeTitle(text)} value={titleValue}/>
-        <Text style={styles.label}>Description</Text>
-        <TextInput style={styles.input} onChangeText={text => onChangeDescription(text)} value={descriptionValue}/>
-        <Button title="Voeg toe" onPress={submitHandler}/>
-
+        <View style={styles.mainContainer}>
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>Titel</Text>
+                <TextInput style={[styles.input, styles.shadowStyle]} onChangeText={text => onChangeTitle(text)} value={titleValue}/>
+                <Text style={styles.label}>Description</Text>
+                <TextInput style={[styles.input, styles.shadowStyle]} onChangeText={text => onChangeDescription(text)} value={descriptionValue}/>
+                <Button title="Voeg toe" onPress={submitHandler}/>
+            </View>
         </View>
     )
+
 }
 
+
 const styles = StyleSheet.create({
-      label: {
+
+    mainContainer: {
+        alignItems: "center",
+        display: "flex",
+        textAlign:"left",
+        borderBottomColor: "black",
+        borderBottomWidth: 5,
+    },
+    inputContainer: {
+        marginBottom: 25,
+    },
+    label: {
         color: 'black',
         fontSize: 16,
         fontWeight: 'bold',
@@ -51,9 +65,29 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         backgroundColor: 'white',
         marginBottom: 5,
+        color: "grey",
+        fontStyle: "italic",
     },
-    inputContainer: {
-        marginBottom: 20,
+
+    button: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        backgroundColor: '#3F5EFB',
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        width: 250,
+        elevation: 4,
+        borderRadius: 8,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 80,
+    },
+
+    shadowStyle: {
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -62,7 +96,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
         elevation: 4,
-    }
+    },
 
 })
 
