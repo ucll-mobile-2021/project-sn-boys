@@ -1,5 +1,5 @@
 import React, { FormEvent, useRef, useContext } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, StyleSheet } from 'react-native'
 import { Context as AfspraakContext } from '../context/AfspraakContext'
 import { addAfspraak } from '../actions/AfspraakActions'
 import { TextInput } from 'react-native'
@@ -31,14 +31,44 @@ const AddAfspraak: React.FC = () => {
         onChangeDescription("Description hier")
     }
     return (
-        <View>
-        <Text>Titel</Text>
-        <TextInput onChangeText={text => onChangeTitle(text)} value={titleValue}/>
-        <Text>Description</Text>
-        <TextInput onChangeText={text => onChangeDescription(text)} value={descriptionValue}/>
+        <View style={styles.inputContainer}>
+        <Text style={styles.label}>Titel</Text>
+        <TextInput style={styles.input} onChangeText={text => onChangeTitle(text)} value={titleValue}/>
+        <Text style={styles.label}>Description</Text>
+        <TextInput style={styles.input} onChangeText={text => onChangeDescription(text)} value={descriptionValue}/>
         <Button title="Voeg toe" onPress={() => submitHandler}/>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+      label: {
+        color: 'black',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    input: {
+        height: 40,
+        width: 300,
+        paddingHorizontal: 5,
+        backgroundColor: 'white',
+        marginBottom: 5,
+    },
+    inputContainer: {
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
+    }
+
+})
+
+
+
 
 export default AddAfspraak
