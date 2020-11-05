@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Button, Alert, Dimensions } from 'react-native'
 import { Provider as AfspraakProvider } from '../context/AfspraakContext'
 import AddAfspraak from '../components/AddAfspraak'
 import AfspraakList from '../components/AfspraakList'
-import { useLinkProps } from '@react-navigation/native'
 
 export const AfspraakScreen: React.FC = (navigation: any) => {
     return (

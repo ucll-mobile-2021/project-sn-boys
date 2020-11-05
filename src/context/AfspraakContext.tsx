@@ -11,9 +11,10 @@ const reducer = (
 ): IAfspraakList => {
     switch(action.type) {
         case "ADD":
+            state.afspraken.push(action.payload)
             return {
                 ...state,
-                afspraken: [...state.afspraken, action.payload]
+                afspraken: state.afspraken
             }
         
         case "DELETE":
@@ -25,14 +26,13 @@ const reducer = (
             const updatedAfspraak = action.payload
 
             const updatedAfspraken = state.afspraken.map(item => {
-                if(item.id !== updatedAfspraak.id) return updatedAfspraak 
+                if(item.id === updatedAfspraak.id) return updatedAfspraak 
                 return item
             })
-
-            
+            state.afspraken = updatedAfspraken
             return {
                 ...state,
-                afspraken: updatedAfspraken
+                afspraken: state.afspraken
             }
     }
 }

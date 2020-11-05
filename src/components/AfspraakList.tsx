@@ -25,9 +25,10 @@ export const AfspraakList: React.FC = () => {
                 <View style={styles.TaskContainer}>
                     <Text style={styles.title}>{item.title}</Text>
                     <Text>{item.description}</Text>
+
                     <View style={styles.buttonGroup}>
                         <Button title="Delete" onPress={() => deleteHandler(item.id)}></Button>
-                        <Button title="Update" onPress={() => navigation.navigate('updateAfspraak')}></Button>
+                        <Button title="Update" onPress={() => navigation.navigate('updateAfspraak', {id: item.id})}></Button>
                     </View>
                 </View>
                 }>
