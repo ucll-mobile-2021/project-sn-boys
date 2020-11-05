@@ -40,6 +40,9 @@ export const UpdateAfspraak: React.FC<{afspraakId: string}> = ({afspraakId}) => 
                 })
         )
 
+            
+        navigation.navigate('Login')
+
     }
     return (
         <View>

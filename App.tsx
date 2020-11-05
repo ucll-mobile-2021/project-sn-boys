@@ -14,7 +14,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen 
-        name="Login Page"
+        name="Login"
         component={LandingScreen}
         />
         <Stack.Screen
