@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, Button, Alert, ImageBackground } from 'react-na
 import { BlurView} from  'react-native-blur'
 import { color, greaterOrEq } from 'react-native-reanimated';
 
-export const LandingScreen = ({navigation}:any) => {
+
+export const LandingScreen: React.FC = ({navigation}:any) => {
     return (
         <View style={styles.maincontainer}>
-            <ImageBackground source="https://www.evenementorganiseren.nl/public/image/artikelen/2016/20180802-messe_luzern_corporate_event.jpg" style={styles.image} blurRadius={6}>
+            <ImageBackground style={styles.image} blurRadius={6} source="https://www.evenementorganiseren.nl/public/image/artikelen/2016/20180802-messe_luzern_corporate_event.jpg">
                     <View style={styles.nestedContainer}>
                         <Text style={styles.title}>Maak een afspraak</Text>
                         <Button onPress={() => navigation.navigate('Afspraken')} title="Bekijk je afspraken"></Button>
@@ -47,6 +48,6 @@ const styles = StyleSheet.create({
         color: "grey",
         fontSize: 30,
         fontWeight: "bold"
-    }
+    },
 
 })

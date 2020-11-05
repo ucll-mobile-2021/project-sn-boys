@@ -9,3 +9,8 @@ export const deleteAfspraak = (id: string):  IAfspraakAction => ({
   type: "DELETE",
   payload: id
 })
+
+export const updateAfspraak = (todo: IAfspraakItem): IAfspraakAction => ({
+  type: "UPDATE",
+  payload: todo
+})

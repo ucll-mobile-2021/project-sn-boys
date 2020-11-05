@@ -21,6 +21,19 @@ const reducer = (
                 ...state,
                 afspraken: state.afspraken.filter((item) => item.id !== action.payload)
             }
+        case "UPDATE":
+            const updatedAfspraak = action.payload
+
+            const updatedAfspraken = state.afspraken.map(item => {
+                if(item.id !== updatedAfspraak.id) return updatedAfspraak 
+                return item
+            })
+
+            
+            return {
+                ...state,
+                afspraken: updatedAfspraken
+            }
     }
 }
 

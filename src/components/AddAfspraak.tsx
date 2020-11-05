@@ -1,18 +1,19 @@
 import React, { FormEvent, useRef, useContext } from 'react'
+import { View, Text, Button } from 'react-native'
 import { Context as AfspraakContext } from '../context/AfspraakContext'
 import { addAfspraak } from '../actions/AfspraakActions'
+import { TextInput } from 'react-native'
 
 const AddAfspraak: React.FC = () => {
     const { dispatch } = useContext(AfspraakContext)
+    const [titleValue , onChangeTitle] = React.useState("Titel hier")
+    const [descriptionValue, onChangeDescription] = React.useState("Description hier")
 
-    const titleInputRef = useRef<HTMLInputElement>(null)
-    const descriptionInputRef = useRef<HTMLInputElement>(null)
+    //const titleInputRef = useRef<HTMLInputElement>(null)
+    //const descriptionInputRef = useRef<HTMLInputElement>(null)
 
     const submitHandler = (event: FormEvent) => {
         event.preventDefault()
-
-        const titleValue = titleInputRef.current!.value
-        const descriptionValue = descriptionInputRef.current!.value
 
         if(titleValue.trim() === "" && descriptionValue.trim() === ""){
             return
@@ -21,20 +22,22 @@ const AddAfspraak: React.FC = () => {
         dispatch(
                 addAfspraak({
                     id: new Date().getTime().toString(),
-                    title: titleInputRef.current!.value,
-                    description: descriptionInputRef.current!.value
+                    title: titleValue,
+                    description: descriptionValue
                 })
         )
 
-        titleInputRef.current!.value = ""
-        descriptionInputRef.current!.value = ""
+        onChangeTitle("Titel hier")
+        onChangeDescription("Description hier")
     }
     return (
-        <form>
-            <input type="text" placeholder="Titel" ref={titleInputRef}/>
-            <input type="text" placeholder="Beschrijving" ref={descriptionInputRef}/>
-            <button type="button" onClick={submitHandler}>Voeg toe</button> 
-        </form>
+        <View>
+        <Text>Titel</Text>
+        <TextInput onChangeText={text => onChangeTitle(text)} value={titleValue}/>
+        <Text>Description</Text>
+        <TextInput onChangeText={text => onChangeDescription(text)} value={descriptionValue}/>
+        <Button title="Voeg toe" onPress={() => submitHandler}/>
+        </View>
     )
 }
 

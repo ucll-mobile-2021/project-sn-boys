@@ -2,10 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LandingScreen } from './src/screens/LoginScreen';
-import { EventScreen } from './src/screens/EventScreen'
+import { AfspraakScreen } from './src/screens/AfspraakScreen'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { TestScreen } from './src/screens/TestScreen'
+import { UpdateScreen } from './src/screens/UpdateScreen'
 
 const Stack = createStackNavigator();
 
@@ -18,13 +18,13 @@ export default function App() {
         component={LandingScreen}
         />
         <Stack.Screen
-          name="Evenementen"
-          component={EventScreen}
+          name="Afspraken"
+          component={AfspraakScreen}
           />
         <Stack.Screen
-          name="Evenement"
-          component={TestScreen}
-        />
+          name="updateAfspraak"
+          component={UpdateScreen}
+          />
       </Stack.Navigator>
     </NavigationContainer>
   );

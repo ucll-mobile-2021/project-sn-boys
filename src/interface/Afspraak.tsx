@@ -3,6 +3,7 @@ import React from 'react'
 export type IAfspraakAction =
     | { type: "ADD"; payload: IAfspraakItem }
     | { type: "DELETE"; payload: string }
+    | { type: "UPDATE"; payload: IAfspraakItem}
 
 export interface IAfspraakItem {
     id: string
