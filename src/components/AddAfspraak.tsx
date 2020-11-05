@@ -11,7 +11,8 @@ const AddAfspraak: React.FC = () => {
     const [descriptionValue, onChangeDescription] = React.useState("Description hier")
 
     const submitHandler = () => {
-        if(titleValue.trim() === "" && descriptionValue.trim() === ""){
+        if(titleValue.trim() === "" || descriptionValue.trim() === ""){
+            alert("Titel/Description mogen niet leeg zijn")
             return
         }
 

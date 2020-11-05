@@ -1,5 +1,5 @@
 import React, { FormEvent, useRef, useContext } from 'react'
-import {View, Text, Button} from 'react-native'
+import {View, Text, Button, StyleSheet, TextInput} from 'react-native'
 import { Context as AfspraakContext } from '../context/AfspraakContext'
 import { updateAfspraak } from '../actions/AfspraakActions'
 import { IAfspraakItem } from '../interface/Afspraak'
@@ -24,19 +24,23 @@ export const UpdateAfspraak: React.FC<{afspraakId: string}> = ({afspraakId}) => 
     } 
 
 
+    const [titleValue , onChangeTitle] = React.useState(afspraak.title)
+    const [descriptionValue, onChangeDescription] = React.useState(afspraak.description)
+
     const submitHandler = () => {
         //const titleValue = titleInputRef.current!.value
         //const descriptionValue = descriptionInputRef.current!.value
 
-        //if(titleValue.trim() === "" && descriptionValue.trim() === ""){
-        //    return
-        //}
+        if(titleValue.trim() === "" || descriptionValue.trim() === ""){
+            alert("Titel/Description mogen niet leeg zijn")
+            return
+        }
 
         dispatch(
                 updateAfspraak({
                     id: afspraakId,
-                    title: "test",
-                    description: "test"
+                    title: titleValue,
+                    description: descriptionValue
                 })
         )
 
@@ -47,11 +51,71 @@ export const UpdateAfspraak: React.FC<{afspraakId: string}> = ({afspraakId}) => 
     return (
         <View>
             <Text>{afspraak.id}</Text>
-            <Text>{afspraak.title}</Text>
-            <Text>{afspraak.description}</Text>
+            <Text style={styles.label}>Titel</Text>
+            <TextInput style={[styles.input, styles.shadowStyle]} onChangeText={text => onChangeTitle(text)} value={titleValue}/>
+            <Text style={styles.label}>Description</Text>
+            <TextInput style={[styles.input, styles.shadowStyle]} onChangeText={text => onChangeDescription(text)} value={descriptionValue}/>
             <Button title="Update afspraak" onPress={submitHandler}/>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+
+    mainContainer: {
+        alignItems: "center",
+        display: "flex",
+        textAlign:"left",
+        borderBottomColor: "black",
+        borderBottomWidth: 5,
+    },
+    inputContainer: {
+        marginBottom: 25,
+    },
+    label: {
+        color: 'black',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    input: {
+        height: 40,
+        width: 300,
+        paddingHorizontal: 5,
+        backgroundColor: 'white',
+        marginBottom: 5,
+        color: "grey",
+        fontStyle: "italic",
+    },
+
+    button: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        backgroundColor: '#3F5EFB',
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        width: 250,
+        elevation: 4,
+        borderRadius: 8,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 80,
+    },
+
+    shadowStyle: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
+    },
+
+})
 
 export default UpdateAfspraak
