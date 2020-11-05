@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useContext } from 'react'
+import React, { FormEvent, useContext } from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native'
 import { Context as AfspraakContext } from '../context/AfspraakContext'
 import { addAfspraak } from '../actions/AfspraakActions'
@@ -6,15 +6,11 @@ import { TextInput } from 'react-native'
 
 const AddAfspraak: React.FC = () => {
     const { dispatch } = useContext(AfspraakContext)
+
     const [titleValue , onChangeTitle] = React.useState("Titel hier")
     const [descriptionValue, onChangeDescription] = React.useState("Description hier")
 
-    //const titleInputRef = useRef<HTMLInputElement>(null)
-    //const descriptionInputRef = useRef<HTMLInputElement>(null)
-
-    const submitHandler = (event: FormEvent) => {
-        event.preventDefault()
-
+    const submitHandler = () => {
         if(titleValue.trim() === "" && descriptionValue.trim() === ""){
             return
         }
@@ -30,13 +26,15 @@ const AddAfspraak: React.FC = () => {
         onChangeTitle("Titel hier")
         onChangeDescription("Description hier")
     }
+
     return (
         <View style={styles.inputContainer}>
         <Text style={styles.label}>Titel</Text>
         <TextInput style={styles.input} onChangeText={text => onChangeTitle(text)} value={titleValue}/>
         <Text style={styles.label}>Description</Text>
         <TextInput style={styles.input} onChangeText={text => onChangeDescription(text)} value={descriptionValue}/>
-        <Button title="Voeg toe" onPress={() => submitHandler}/>
+        <Button title="Voeg toe" onPress={submitHandler}/>
+
         </View>
     )
 }
