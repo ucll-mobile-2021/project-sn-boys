@@ -1,4 +1,5 @@
 import React, { useReducer } from "react"
+import { deleteAfspraak } from "../actions/AfspraakActions"
 import { IAfspraakAction, IAfspraakList, IAfspraakItem, IContextModel } from '../interface/Afspraak'
 
 const defaultState: IAfspraakList = {
@@ -18,18 +19,21 @@ const reducer = (
             }
         
         case "DELETE":
+            state.afspraken = state.afspraken.filter(item => item.id !== action.payload)
             return {
                 ...state,
-                afspraken: state.afspraken.filter((item) => item.id !== action.payload)
+                afspraken: state.afspraken
             }
+
         case "UPDATE":
             const updatedAfspraak = action.payload
-
             const updatedAfspraken = state.afspraken.map(item => {
                 if(item.id === updatedAfspraak.id) return updatedAfspraak 
                 return item
             })
+
             state.afspraken = updatedAfspraken
+            
             return {
                 ...state,
                 afspraken: state.afspraken
