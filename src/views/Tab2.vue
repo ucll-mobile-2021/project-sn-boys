@@ -15,13 +15,12 @@
         </ion-toolbar>
       </ion-header>
       <div v-if="todos.length > 0">
-        <ion-list v-for="todo in todos" :key="todo">
+        <ion-list v-for="todo in todos" :key="todo.id">
           <ion-grid>
             <ion-row class="ion-align-items-center">
               <ion-col size="8">
                 <ion-card>
                   <ion-card-header>
-                    <ion-card-subtitle>{{ Date.now() }}</ion-card-subtitle>
                     <ion-card-title>{{ todo.name }}</ion-card-title>
                   </ion-card-header>
                   <ion-card-content>{{ todo.description }}</ion-card-content>
