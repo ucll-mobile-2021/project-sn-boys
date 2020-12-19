@@ -19,10 +19,10 @@ export default defineComponent({
     const main = useMainStore()
 
     onBeforeUnmount(() => {
-      main.saveTodos()
+      main.saveAppointment()
     })
 
-    main.loadTodos()
+    main.loadAppointment()
   }
 })
 </script>

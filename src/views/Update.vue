@@ -50,7 +50,7 @@ import {
   toastController
 } from '@ionic/vue'
 import { Ref, ref } from 'vue'
-import { useMainStore, Todo } from '@/stores'
+import { useMainStore, Appointment } from '@/stores'
 import { useRouter, useRoute } from 'vue-router'
 import { Plugins } from '@capacitor/core'
 
@@ -83,11 +83,11 @@ export default {
     const todoId = Number(route.params.todoId);
 
     // main.todos.filter returned array, maar met id is er maar 1 object erin dus we pakken de eerste
-    const todo = ref(Object.assign({}, store.todos.filter(todo =>todoId === todo.id!)[0]))
+    const todo = ref(Object.assign({}, store.appointments.filter(appointment =>todoId === appointment.id!)[0]))
 
     const updateTodo = () => {
-        store.todos = store.todos.filter(todo => todoId != todo.id!)
-        store.addTodo(todo.value)
+        store.appointments = store.appointments.filter(appointment => todoId != appointment.id!)
+        store.addAppointment(todo.value)
         router.back()
     }
 

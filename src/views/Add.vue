@@ -5,7 +5,7 @@
         <ion-buttons slot="start">
           <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>Add TODO</ion-title>
+        <ion-title>Add Afspraak</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
@@ -15,20 +15,24 @@
         </ion-toolbar>
       </ion-header>
       <ion-item class="ion-margin-top">
-        <ion-label position="floating">Name</ion-label>
-        <ion-input v-model="name"></ion-input>
-      </ion-item>
-      <ion-item class="ion-margin-top">
         <ion-label position="floating">Description</ion-label>
         <ion-textarea v-model="description"></ion-textarea>
       </ion-item>
+      <ion-item class="ion-margin-top">
+        <ion-label position="floating">date</ion-label>
+        <ion-input v-model="date"></ion-input>
+      </ion-item>
+      <ion-item class="ion-margin-top">
+        <ion-label position="floating">adress</ion-label>
+        <ion-input v-model="adress"></ion-input>
+      </ion-item>
       <ion-button
-        @click="addTodo"
+        @click="addAfspraak"
         :disabled="clicked"
         class="ion-margin-top"
         color="success"
         expand="block"
-      >Add TODO</ion-button>
+      >Add Afspraak</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -71,7 +75,8 @@ export default {
     IonItem
   },
   setup() {
-    const name: Ref<string> = ref('')
+    const adress: Ref<string> = ref('')
+    const date: Ref<string> = ref('')
     const description: Ref<string> = ref('')
     const clicked: Ref<boolean> = ref(false)
     const router = useRouter()
@@ -79,23 +84,26 @@ export default {
     const main = useMainStore()
 
     const resetValues = () => {
-      name.value = ''
+      adress.value = ''
+      date.value = ''
       description.value = ''
+      
     }
 
-    const addTodo = async () => {
+    const addAfspraak = async () => {
       // TODO: Check for errors?
 
       clicked.value = true
 
-      main.addTodo({
+      main.addAppointment({
         id: Date.now(),
-        name: name.value,
-        description: description.value
+        date: date.value,
+        description: description.value,
+        adress: adress.value
       })
 
       const toast = await toastController.create({
-        message: 'Added new todo to the list',
+        message: 'Added new afspraak to the list',
         duration: 3000,
         color: 'success'
       })
@@ -109,7 +117,7 @@ export default {
       router.back()
     }
 
-    return { name, description, addTodo, clicked }
+    return { adress, date, description, addAfspraak, clicked }
   }
 }
 </script>
