@@ -4,9 +4,9 @@ import { Plugins } from "@capacitor/core";
 
 export type Appointment = {
   id?: number;
-  date: string;
+  date: Date;
   description: string;
-  adress: string;
+  address: string;
 };
 
 const { Storage } = Plugins;
@@ -42,7 +42,7 @@ export const useMainStore = defineStore({
     },
 
     async deleteAppointment(appointment: Appointment) {
-      this.appointments = this.appointments.filter((t) => appointment.id !== t.id);
+      this.appointments = this.appointments.filter((t) => appointment.id !== t.id).reverse();
       await Storage.set({
         key: "appointments",
         value: JSON.stringify(this.appointments),

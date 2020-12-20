@@ -19,13 +19,12 @@
         <ion-textarea v-model="description"></ion-textarea>
       </ion-item>
       <ion-item class="ion-margin-top">
-    <ion-label>D MMM YYYY H:mm</ion-label>
-     <ion-textarea v-model="date"></ion-textarea>
-    <!--<ion-datetime v-model="date" display-format="D MMM YYYY H:mm"></ion-datetime>-->
+    <ion-label>Date</ion-label>
+    <ion-datetime display-format="D MMM YYYY H:mm" min="2020-12-20" max="2030" :value="date" @ionChange="date = $event.target.value"></ion-datetime>
       </ion-item>
       <ion-item class="ion-margin-top">
-        <ion-label position="floating">Adress</ion-label>
-        <ion-input v-model="adress"></ion-input>
+        <ion-label position="floating">Address</ion-label>
+        <ion-input v-model="address"></ion-input>
       </ion-item>
       <ion-button
         @click="addAppointment"
@@ -76,23 +75,47 @@ export default {
     IonItem
   },
   setup() {
-    const adress: Ref<string> = ref('')
-    const date: Ref<string> = ref('')
+    const address: Ref<string> = ref('')
+    const date: Ref<Date> = ref(new Date())
     const description: Ref<string> = ref('')
     const clicked: Ref<boolean> = ref(false)
     const router = useRouter()
 
+    const { Modals } = Plugins
+
     const main = useMainStore()
 
     const resetValues = () => {
-      adress.value = ''
-      date.value = ''
+      address.value = ''
+      date.value = new Date()
       description.value = ''
       
     }
 
     const addAppointment = async () => {
-      // TODO: Check for errors?
+      if (new Date(date.value) < new Date() ) {
+              const confirm = await Modals.alert({
+        title: 'Invalid date',
+        message: `Date can't be earlier than current date!`
+      })
+        return
+      }
+
+      if(description.value.trim() === "" || description.value.length > 1000){
+        const confirm = await Modals.alert({
+          title: 'Invalid description',
+          message: `Description can't be empty!`
+        })
+      return
+      }
+
+      if(address.value.trim() === "" || address.value.length > 150){
+        const confirm = await Modals.alert({
+          title: 'Invalid address',
+          message: `Address can't be empty!`
+        })
+      }
+
 
       clicked.value = true
 
@@ -100,7 +123,7 @@ export default {
         id: Date.now(),
         date: date.value,
         description: description.value,
-        adress: adress.value
+        address: address.value
       })
 
       const toast = await toastController.create({
@@ -117,8 +140,12 @@ export default {
 
       router.back()
     }
+    
+    const onChangeTime = (event: any) => {
+      console.log(event);
+    }
 
-    return { adress, date, description, addAppointment, clicked }
+    return { onChangeTime, address, date, description, addAppointment, clicked }
   }
 }
 </script>

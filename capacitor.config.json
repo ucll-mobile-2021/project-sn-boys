@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "myApp.appointment.start",
   "appName": "myApp",
   "bundledWebRuntime": false,
   "npmClient": "npm",

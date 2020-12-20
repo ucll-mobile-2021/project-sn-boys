@@ -21,9 +21,10 @@
               <ion-col size="8">
                 <ion-card>
                   <ion-card-header>
-                    <ion-card-title>{{ appointment.name }}</ion-card-title>
+                    <ion-card-title>{{ appointment.description }}</ion-card-title>
                   </ion-card-header>
-                  <ion-card-content>{{ appointment.description }}</ion-card-content>
+                  <ion-card-content>{{ new Date(appointment.date).toLocaleString("nl-BE") }}</ion-card-content>
+                  <ion-card-content>{{ appointment.address }}</ion-card-content>
                 </ion-card>
               </ion-col>
               <ion-col size="4">
@@ -72,6 +73,7 @@ export default {
     const router = useRouter()
     const store = useMainStore()
     const { Modals } = Plugins
+
 
     const openAddRoute = () => {
       router.push('/tabs/appointments/add')
