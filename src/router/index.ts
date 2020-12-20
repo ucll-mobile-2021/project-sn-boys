@@ -26,15 +26,15 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
       {
-        path: "todos",
-        component: () => import("@/views/Tab2.vue"),
+        path: "appointments",
+        component: () => import("@/views/Appointments.vue"),
         children: [
           {
             path: "add",
             component: () => import("@/views/Add.vue"),
           },
           {
-            path: ":todoId",
+            path: ":appointmentId",
             name: 'update',
             component: () => import("@/views/Update.vue"),
           },

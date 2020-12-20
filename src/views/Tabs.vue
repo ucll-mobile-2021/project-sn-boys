@@ -7,9 +7,9 @@
           <ion-label>Settings</ion-label>
         </ion-tab-button>
 
-        <ion-tab-button tab="tab2" href="/tabs/todos">
+        <ion-tab-button tab="Appointments" href="/tabs/appointments">
           <ion-icon :icon="logoStackoverflow" />
-          <ion-label>TODOS</ion-label>
+          <ion-label>Appointments</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="tab3" href="/tabs/tab3">

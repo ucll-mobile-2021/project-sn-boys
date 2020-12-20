@@ -5,7 +5,7 @@
         <ion-buttons slot="start">
           <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>Update TODO</ion-title>
+        <ion-title>Update appointment</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
@@ -16,19 +16,19 @@
       </ion-header>
       <ion-item class="ion-margin-top">
         <ion-label position="floating">Name</ion-label>
-        <ion-input v-model="todo.name"></ion-input>
+        <ion-input v-model="appointment.name"></ion-input>
       </ion-item>
       <ion-item class="ion-margin-top">
         <ion-label position="floating">Description</ion-label>
-        <ion-textarea v-model="todo.description"></ion-textarea>
+        <ion-textarea v-model="appointment.description"></ion-textarea>
       </ion-item>
       <ion-button
-        @click="updateTodo"
+        @click="updateAppointment"
         :disabled="clicked"
         class="ion-margin-top"
         color="success"
         expand="block"
-      >Update TODO</ion-button>
+      >Update appointment</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -55,7 +55,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { Plugins } from '@capacitor/core'
 
 export default {
-  name: 'Tab2',
+  name: 'Appointments',
   components: {
     IonHeader,
     IonToolbar,
@@ -80,18 +80,17 @@ export default {
 
     const store = useMainStore()
 
-    const todoId = Number(route.params.todoId);
+    const appointmentId = Number(route.params.appointmentId);
 
-    // main.todos.filter returned array, maar met id is er maar 1 object erin dus we pakken de eerste
-    const todo = ref(Object.assign({}, store.appointments.filter(appointment =>todoId === appointment.id!)[0]))
+    const appointment = ref(Object.assign({}, store.appointments.filter(appointment =>appointmentId === appointment.id!)[0]))
 
-    const updateTodo = () => {
-        store.appointments = store.appointments.filter(appointment => todoId != appointment.id!)
-        store.addAppointment(todo.value)
+    const updateAppointment = () => {
+        store.appointments = store.appointments.filter(appointment => appointmentId != appointment.id!)
+        store.addAppointment(appointment.value)
         router.back()
     }
 
-    return { todo, updateTodo, clicked }
+    return { appointment, updateAppointment, clicked }
   }
 }
 </script>

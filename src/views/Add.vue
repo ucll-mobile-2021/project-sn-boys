@@ -5,7 +5,7 @@
         <ion-buttons slot="start">
           <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>Add Afspraak</ion-title>
+        <ion-title>Add appointment</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
@@ -19,20 +19,21 @@
         <ion-textarea v-model="description"></ion-textarea>
       </ion-item>
       <ion-item class="ion-margin-top">
-        <ion-label position="floating">date</ion-label>
-        <ion-input v-model="date"></ion-input>
+    <ion-label>D MMM YYYY H:mm</ion-label>
+     <ion-textarea v-model="date"></ion-textarea>
+    <!--<ion-datetime v-model="date" display-format="D MMM YYYY H:mm"></ion-datetime>-->
       </ion-item>
       <ion-item class="ion-margin-top">
-        <ion-label position="floating">adress</ion-label>
+        <ion-label position="floating">Adress</ion-label>
         <ion-input v-model="adress"></ion-input>
       </ion-item>
       <ion-button
-        @click="addAfspraak"
+        @click="addAppointment"
         :disabled="clicked"
         class="ion-margin-top"
         color="success"
         expand="block"
-      >Add Afspraak</ion-button>
+      >Add appointment</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -59,7 +60,7 @@ import { useRouter } from 'vue-router'
 import { Plugins } from '@capacitor/core'
 
 export default {
-  name: 'Tab2',
+  name: 'Appointments',
   components: {
     IonHeader,
     IonToolbar,
@@ -90,7 +91,7 @@ export default {
       
     }
 
-    const addAfspraak = async () => {
+    const addAppointment = async () => {
       // TODO: Check for errors?
 
       clicked.value = true
@@ -103,7 +104,7 @@ export default {
       })
 
       const toast = await toastController.create({
-        message: 'Added new afspraak to the list',
+        message: 'Added new appointment to the list',
         duration: 3000,
         color: 'success'
       })
@@ -117,7 +118,7 @@ export default {
       router.back()
     }
 
-    return { adress, date, description, addAfspraak, clicked }
+    return { adress, date, description, addAppointment, clicked }
   }
 }
 </script>

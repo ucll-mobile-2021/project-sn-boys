@@ -2,34 +2,34 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Afspraken</ion-title>
+        <ion-title>Appointments</ion-title>
         <ion-button @click="openAddRoute" color="success" class="ion-padding-end" slot="end">
-          <ion-icon slot="start" :icon="addCircleOutline"></ion-icon>Add Afspraak
+          <ion-icon slot="start" :icon="addCircleOutline"></ion-icon>Add appointment
         </ion-button>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Afspraak</ion-title>
+          <ion-title size="large">Appointment</ion-title>
         </ion-toolbar>
       </ion-header>
-      <div v-if="todos.length > 0">
-        <ion-list v-for="todo in todos" :key="todo.id">
+      <div v-if="appointments.length > 0">
+        <ion-list v-for="appointment in appointments" :key="appointment.id">
           <ion-grid>
             <ion-row class="ion-align-items-center">
               <ion-col size="8">
                 <ion-card>
                   <ion-card-header>
-                    <ion-card-title>{{ todo.name }}</ion-card-title>
+                    <ion-card-title>{{ appointment.name }}</ion-card-title>
                   </ion-card-header>
-                  <ion-card-content>{{ todo.description }}</ion-card-content>
+                  <ion-card-content>{{ appointment.description }}</ion-card-content>
                 </ion-card>
               </ion-col>
               <ion-col size="4">
                 <ion-button class="ion-margin-start" color="tertiary">Show</ion-button>
-                <ion-button @click="openUpdateRoute(todo)" class="ion-margin-start" color="warning">Update</ion-button>
-                <ion-button @click="deleteAppointment(todo)" class="ion-margin-start" color="danger">Delete</ion-button>
+                <ion-button @click="openUpdateRoute(appointment)" class="ion-margin-start" color="warning">Update</ion-button>
+                <ion-button @click="deleteAppointment(appointment)" class="ion-margin-start" color="danger">Delete</ion-button>
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -59,7 +59,7 @@ import { computed } from 'vue'
 import { Plugins } from '@capacitor/core'
 
 export default {
-  name: 'Tab2',
+  name: 'Appointments',
   components: {
     IonHeader,
     IonToolbar,
@@ -74,17 +74,17 @@ export default {
     const { Modals } = Plugins
 
     const openAddRoute = () => {
-      router.push('/tabs/todos/add')
+      router.push('/tabs/appointments/add')
     }
 
     const openUpdateRoute = (appointment: Appointment) => {
-        router.push({name: 'update', params: { todoId: appointment.id!}})
+        router.push({name: 'update', params: { appointmentId: appointment.id!}})
     }
 
     const deleteAppointment = async (appointment: Appointment) => {
       const confirm = await Modals.confirm({
         title: 'Delete appointment',
-        message: `Are you sure you want to delete appointment with id ${appointment.id}`
+        message: `Are you sure you want to delete appointment with description: ${appointment.description}`
       })
 
       if (confirm.value) {
@@ -101,7 +101,7 @@ export default {
     return {
       addCircleOutline,
       openAddRoute,
-      todos: computed(() => store.appointments.reverse()),
+      appointments: computed(() => store.appointments.reverse()),
       deleteAppointment,
       openUpdateRoute
     }

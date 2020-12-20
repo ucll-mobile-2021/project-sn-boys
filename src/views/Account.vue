@@ -31,7 +31,7 @@ import {
 } from '@ionic/vue'
 
 export default {
-  name: 'Tab2',
+  name: 'Appointments',
   components: {
     IonHeader,
     IonToolbar,
