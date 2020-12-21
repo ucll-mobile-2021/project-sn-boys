@@ -118,6 +118,15 @@ export default {
 
 
       clicked.value = true
+      const inTenSec = new Date();
+      inTenSec.setSeconds(inTenSec.getSeconds()+10);
+
+      const noteOption = {
+        id: Date.now(),
+        title: "test titel",
+        message: "test message",
+        at: inTenSec
+      }
 
       main.addAppointment({
         id: Date.now(),
