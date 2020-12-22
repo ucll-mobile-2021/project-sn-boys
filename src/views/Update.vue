@@ -111,27 +111,11 @@ export default {
         })
       }
 
-      const notifications: LocalNotificationRequest[]   = await (await LocalNotifications.getPending()).notifications
+      //Cancels the notification if there is one (but not really)
+      const cancelNotification: LocalNotificationRequest = {id: ''+appointmentId}
+      const pendingList: LocalNotificationPendingList = {notifications: [cancelNotification]}
+      await LocalNotifications.cancel(pendingList)
 
-    if(notifications.length > 0 ){
-
-      let cancelNotification: LocalNotificationRequest | null = null;
-
-      notifications.forEach(not => {
-        const notId = parseInt(not.id)
-        if(notId === appointmentId){
-          cancelNotification = not
-          return
-        }
-      })
-
-      if(cancelNotification !== null){
-        const pendingList: LocalNotificationPendingList = {notifications: [cancelNotification!]}
-        LocalNotifications.cancel(pendingList)
-      }
-    }
-
-    
       const scheduleDate = new Date(appointment.value.date)
       scheduleDate.setSeconds(scheduleDate.getSeconds()-20)
 

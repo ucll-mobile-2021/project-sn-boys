@@ -115,6 +115,7 @@ export default {
           title: 'Invalid address',
           message: `Address can't be empty!`
         })
+        return
       }
 
       clicked.value = true

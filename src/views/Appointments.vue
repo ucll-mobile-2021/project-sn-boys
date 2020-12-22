@@ -92,24 +92,11 @@ export default {
 
       if (confirm.value) {
         const appointmentId = appointment.id!
-        const notifications: LocalNotificationRequest[]   = await (await LocalNotifications.getPending()).notifications
-        if(notifications.length > 0 ){
 
-        let cancelNotification: LocalNotificationRequest | null = null;
-
-        notifications.forEach(not => {
-          const notId = parseInt(not.id)
-          if(notId === appointmentId){
-            cancelNotification = not
-            return
-          }
-        })
-        if(cancelNotification !== null){
-          const pendingList: LocalNotificationPendingList = {notifications: [cancelNotification!]}
-          await LocalNotifications.cancel(pendingList)
-        }
-        
-    }
+        //Cancels the notification if there is one (but not really)
+        const cancelNotification: LocalNotificationRequest = {id: ''+appointment.id!}
+        const pendingList: LocalNotificationPendingList = {notifications: [cancelNotification]}
+        await LocalNotifications.cancel(pendingList)
 
         store.deleteAppointment(appointment)
         const toast = await toastController.create({
