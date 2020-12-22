@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { Plugins } from "@capacitor/core";
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
 
 
 export type Appointment = {
@@ -10,10 +10,8 @@ export type Appointment = {
   address: string;
 };
 
-declare const cordova: any;
 const { Storage } = Plugins;
-const inTenSec = new Date();
-      inTenSec.setSeconds(inTenSec.getSeconds()+10);
+const { LocalNotifications } = Plugins;
 
 export const useMainStore = defineStore({
   id: "appointments",
@@ -37,14 +35,7 @@ export const useMainStore = defineStore({
       });
     },
 
-    async addAppointment(appointment: Appointment) {
-      cordova.Plugins.notifications.local.schedule({
-        title: 'titel test',
-        text: 'test text',
-        at: inTenSec
-
-      })
-      
+    async addAppointment(appointment: Appointment) {      
       this.appointments.push(appointment);
       await Storage.set({
         key: "appointments",

@@ -57,7 +57,7 @@ import { addCircleOutline } from 'ionicons/icons'
 import { useRouter } from 'vue-router'
 import { useMainStore, Appointment } from '@/stores'
 import { computed } from 'vue'
-import { Plugins } from '@capacitor/core'
+import { LocalNotificationRequest, LocalNotificationPendingList, Plugins } from '@capacitor/core'
 
 export default {
   name: 'Appointments',
@@ -73,6 +73,7 @@ export default {
     const router = useRouter()
     const store = useMainStore()
     const { Modals } = Plugins
+    const { LocalNotifications } = Plugins
 
 
     const openAddRoute = () => {
@@ -90,6 +91,26 @@ export default {
       })
 
       if (confirm.value) {
+        const appointmentId = appointment.id!
+        const notifications: LocalNotificationRequest[]   = await (await LocalNotifications.getPending()).notifications
+        if(notifications.length > 0 ){
+
+        let cancelNotification: LocalNotificationRequest | null = null;
+
+        notifications.forEach(not => {
+          const notId = parseInt(not.id)
+          if(notId === appointmentId){
+            cancelNotification = not
+            return
+          }
+        })
+        if(cancelNotification !== null){
+          const pendingList: LocalNotificationPendingList = {notifications: [cancelNotification!]}
+          await LocalNotifications.cancel(pendingList)
+        }
+        
+    }
+
         store.deleteAppointment(appointment)
         const toast = await toastController.create({
           message: 'Deleted appointment',

@@ -81,7 +81,8 @@ export default {
     const clicked: Ref<boolean> = ref(false)
     const router = useRouter()
 
-    const { Modals } = Plugins
+    const { Modals } = Plugins;
+    const { LocalNotifications } = Plugins;
 
     const main = useMainStore()
 
@@ -116,20 +117,24 @@ export default {
         })
       }
 
-
       clicked.value = true
-      const inTenSec = new Date();
-      inTenSec.setSeconds(inTenSec.getSeconds()+10);
 
-      const noteOption = {
-        id: Date.now(),
-        title: "test titel",
-        message: "test message",
-        at: inTenSec
-      }
+      const scheduleDate = new Date(date.value)
+      scheduleDate.setSeconds(scheduleDate.getSeconds()-20)
+
+      const appointmentId = Date.now()
+
+      LocalNotifications.schedule({
+          notifications: [{
+            title: description.value,
+            body: address.value,
+            id: appointmentId,
+            schedule: { at: scheduleDate}
+          }]
+      })
 
       main.addAppointment({
-        id: Date.now(),
+        id: appointmentId,
         date: date.value,
         description: description.value,
         address: address.value

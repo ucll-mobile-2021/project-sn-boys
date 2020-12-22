@@ -55,7 +55,7 @@ import {
 import { Ref, ref } from 'vue'
 import { useMainStore, Appointment } from '@/stores'
 import { useRouter, useRoute } from 'vue-router'
-import { Plugins } from '@capacitor/core'
+import { LocalNotificationPendingList, LocalNotificationRequest, Plugins } from '@capacitor/core'
 
 export default {
   name: 'Appointments',
@@ -79,6 +79,7 @@ export default {
     const route = useRoute()
 
     const { Modals } = Plugins
+    const { LocalNotifications } = Plugins
 
     const store = useMainStore()
 
@@ -110,9 +111,44 @@ export default {
         })
       }
 
-        store.appointments = store.appointments.filter(appointment => appointmentId != appointment.id!)
-        store.addAppointment(appointment.value)
-        router.back()
+      const notifications: LocalNotificationRequest[]   = await (await LocalNotifications.getPending()).notifications
+
+    if(notifications.length > 0 ){
+
+      let cancelNotification: LocalNotificationRequest | null = null;
+
+      notifications.forEach(not => {
+        const notId = parseInt(not.id)
+        if(notId === appointmentId){
+          cancelNotification = not
+          return
+        }
+      })
+
+      if(cancelNotification !== null){
+        const pendingList: LocalNotificationPendingList = {notifications: [cancelNotification!]}
+        LocalNotifications.cancel(pendingList)
+      }
+    }
+
+    
+      const scheduleDate = new Date(appointment.value.date)
+      scheduleDate.setSeconds(scheduleDate.getSeconds()-20)
+
+      LocalNotifications.schedule({
+          notifications: [{
+            title: appointment.value.description,
+            body: appointment.value.address,
+            id: appointmentId,
+            schedule: { at: scheduleDate}
+          }]
+      })
+
+
+
+      store.appointments = store.appointments.filter(appointment => appointmentId != appointment.id!)
+      store.addAppointment(appointment.value)
+      router.back()
     }
 
     return { appointment, updateAppointment, clicked }
