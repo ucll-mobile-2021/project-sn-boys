@@ -11,10 +11,7 @@
           <ion-title size="large">Calendar</ion-title>
         </ion-toolbar>
       </ion-header>
-                    <ion-col size="4">
-                      <ion-button @click="prevWeekRoute()" class="ion-margin-start" color="warning">Previous</ion-button>
-                      <ion-button @click="nextWeekRoute()" class="ion-margin-start" color="tertiary">Next</ion-button>
-                    </ion-col>
+      <ion-title>{{mondayDate}} - {{sundayDate}}</ion-title>
       <div v-if="appointments.length > 0">
         <ion-list v-for="appointment in appointments" :key="appointment.id">
           <ion-grid>
@@ -36,8 +33,10 @@
       <div class="ion-padding ion-text-center" v-else>
         <ion-label>No appointments Found</ion-label>
       </div>
-
-      <ExploreContainer name="Calendar page" />
+        <ion-col size="4">
+        <ion-button @click="prevWeek()" class="ion-margin-start" color="warning">Previous</ion-button>
+        <ion-button @click="nextWeek()" class="ion-margin-start" color="tertiary">Next</ion-button>
+        </ion-col>
     </ion-content>
   </ion-page>
 </template>
@@ -50,15 +49,13 @@ import {
   IonTitle,
   IonContent
 } from '@ionic/vue'
-import ExploreContainer from '@/components/ExploreContainer.vue'
 import { Appointment, useMainStore } from '@/stores'
-import { computed } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 export default {
   name: 'Calendar',
   components: {
-    ExploreContainer,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -69,43 +66,63 @@ export default {
 setup(){
   const route = useRoute()
   const router = useRouter()
-
-  const currentWeekParam = route.params.week
-  let currentWeek = new Date()
   const store = useMainStore();
-  console.log(currentWeekParam)
-  const checkWeek = (appointments: Appointment[]) => {
-    if(currentWeekParam !== undefined){
-      currentWeek = new Date(String(currentWeekParam))
-      console.log(currentWeek)
-    }
-    const first = currentWeek.getDate() - currentWeek.getDay() +1; // First day is the day of the month - the day of the week
-    const last = first + 6; // last day is the first day + 6
-    const thisWeeks: Appointment[] = []
-    appointments.forEach(appointment =>
-    {
-      const cDay = new Date(appointment.date).getDate()
-      if(cDay <= last && cDay >= first){
-        thisWeeks.push(appointment)
-      }
-      } 
 
-    )
-    
-    return thisWeeks
+  const appointments = ref(store.appointments)
+
+  const currentWeek = new Date()
+
+  const mondayDate = ref('')
+  const sundayDate = ref('')
+
+
+
+  const isThisWeek = (date: Date) => {
+    const lastMonday = new Date(currentWeek); 
+    lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay()-1)); 
+    lastMonday.setHours(0,0,0,0); 
+
+    const res = lastMonday.getTime() <= date.getTime() &&
+                date.getTime() < ( lastMonday.getTime() + 604800000);
+    return res;
   }
 
-  const prevWeekRoute = () => {
+  const loadAppointments = () => {
+    // lelijke fix voor inladen monday/sunday Date, nie kijken aub
+    const lastMonday = new Date(currentWeek); 
+    lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay()-1)); 
+    lastMonday.setHours(0,0,0,0); 
+    
+    mondayDate.value = new Date(lastMonday).toLocaleDateString("nl-BE")
+    sundayDate.value = new Date(lastMonday.getTime() + 604800000).toLocaleDateString("nl-BE")
+
+    appointments.value = []
+    const apps: Appointment[] = store.appointments
+    apps.forEach(app => {
+      if(isThisWeek(new Date(app.date))) appointments.value.push(app)
+    })
+  }
+
+  onBeforeMount(() => {
+    loadAppointments()
+  })
+
+  const prevWeek = () => {
      currentWeek.setDate(currentWeek.getDate()-7)
-  router.push({name: 'Calendar', params: { week: "haha" }})
-}
+     loadAppointments()
+  }
 
- 
-
+  const nextWeek = () => {
+    currentWeek.setDate(currentWeek.getDate()+7)
+    loadAppointments()
+  }
 
 return {
-  appointments: computed(() => checkWeek(store.appointments.reverse())),
-  prevWeekRoute
+  appointments,
+  prevWeek,
+  nextWeek,
+  mondayDate,
+  sundayDate
 }
 }
 }
