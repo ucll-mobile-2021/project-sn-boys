@@ -15,6 +15,10 @@
         </ion-toolbar>
       </ion-header>
       <ion-item class="ion-margin-top">
+        <ion-label position="floating">Title</ion-label>
+        <ion-textarea v-model="appointment.title"></ion-textarea>
+      </ion-item>
+      <ion-item class="ion-margin-top">
         <ion-label position="floating">Description</ion-label>
         <ion-textarea v-model="appointment.description"></ion-textarea>
       </ion-item>
@@ -96,10 +100,18 @@ export default {
         return
       }
 
+      if(appointment.value.title.trim() === "" ||appointment.value.title.length > 50){
+        const confirm = await Modals.alert({
+          title: 'Invalid title',
+          message: `Title can't be empty/too long!`
+        })
+        return
+      }
+
       if(appointment.value.description.trim() === "" || appointment.value.description.length > 1000){
         const confirm = await Modals.alert({
           title: 'Invalid description',
-          message: `Description can't be empty!`
+          message: `Description can't be empty/too long!`
         })
       return
       }
@@ -107,7 +119,7 @@ export default {
       if(appointment.value.address.trim() === "" || appointment.value.address.length > 150){
         const confirm = await Modals.alert({
           title: 'Invalid address',
-          message: `Address can't be empty!`
+          message: `Address can't be empty/too long!`
         })
       }
 

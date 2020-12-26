@@ -21,14 +21,13 @@
               <ion-col size="8">
                 <ion-card>
                   <ion-card-header>
-                    <ion-card-title>{{ appointment.description }}</ion-card-title>
+                    <ion-card-title>{{ appointment.title }}</ion-card-title>
                   </ion-card-header>
                   <ion-card-content>{{ new Date(appointment.date).toLocaleString("nl-BE") }}</ion-card-content>
-                  <ion-card-content>{{ appointment.address }}</ion-card-content>
                 </ion-card>
               </ion-col>
               <ion-col size="4">
-                <ion-button class="ion-margin-start" color="tertiary">Show</ion-button>
+                <ion-button @click="openShowRoute(appointment)" class="ion-margin-start" color="tertiary">Show</ion-button>
                 <ion-button @click="openUpdateRoute(appointment)" class="ion-margin-start" color="warning">Update</ion-button>
                 <ion-button @click="deleteAppointment(appointment)" class="ion-margin-start" color="danger">Delete</ion-button>
               </ion-col>
@@ -80,6 +79,10 @@ export default {
       router.push('/tabs/appointments/add')
     }
 
+    const openShowRoute = (appointment: Appointment) => {
+      router.push({name: 'show', params: { appointmentId: appointment.id!}})
+    }
+
     const openUpdateRoute = (appointment: Appointment) => {
         router.push({name: 'update', params: { appointmentId: appointment.id!}})
     }
@@ -113,7 +116,8 @@ export default {
       openAddRoute,
       appointments: computed(() => store.appointments.reverse()),
       deleteAppointment,
-      openUpdateRoute
+      openUpdateRoute,
+      openShowRoute
     }
   }
 }

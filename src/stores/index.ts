@@ -6,6 +6,7 @@ import { Plugins } from "@capacitor/core";
 export type Appointment = {
   id?: number;
   date: Date;
+  title: string;
   description: string;
   address: string;
 };

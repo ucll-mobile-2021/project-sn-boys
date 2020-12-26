@@ -15,6 +15,10 @@
         </ion-toolbar>
       </ion-header>
       <ion-item class="ion-margin-top">
+        <ion-label position="floating">Title</ion-label>
+        <ion-textarea v-model="title"></ion-textarea>
+      </ion-item>
+      <ion-item class="ion-margin-top">
         <ion-label position="floating">Description</ion-label>
         <ion-textarea v-model="description"></ion-textarea>
       </ion-item>
@@ -75,6 +79,7 @@ export default {
     IonItem
   },
   setup() {
+    const title: Ref<string> = ref('')
     const address: Ref<string> = ref('')
     const date: Ref<Date> = ref(new Date())
     const description: Ref<string> = ref('')
@@ -90,6 +95,7 @@ export default {
       address.value = ''
       date.value = new Date()
       description.value = ''
+      title.value = ''
       
     }
 
@@ -102,10 +108,18 @@ export default {
         return
       }
 
+      if(title.value.trim() === "" || title.value.length > 50){
+        const confirm = await Modals.alert({
+          title: 'Invalid title',
+          message: `Title can't be empty/too long!`
+        })
+        return
+      }
+
       if(description.value.trim() === "" || description.value.length > 1000){
         const confirm = await Modals.alert({
           title: 'Invalid description',
-          message: `Description can't be empty!`
+          message: `Description can't be empty/too long!`
         })
       return
       }
@@ -113,7 +127,7 @@ export default {
       if(address.value.trim() === "" || address.value.length > 150){
         const confirm = await Modals.alert({
           title: 'Invalid address',
-          message: `Address can't be empty!`
+          message: `Address can't be empty/too long!`
         })
         return
       }
@@ -127,8 +141,8 @@ export default {
 
       LocalNotifications.schedule({
           notifications: [{
-            title: description.value,
-            body: address.value,
+            title: title.value,
+            body: description.value,
             id: appointmentId,
             schedule: { at: scheduleDate}
           }]
@@ -137,6 +151,7 @@ export default {
       main.addAppointment({
         id: appointmentId,
         date: date.value,
+        title: title.value,
         description: description.value,
         address: address.value
       })
@@ -160,7 +175,7 @@ export default {
       console.log(event);
     }
 
-    return { onChangeTime, address, date, description, addAppointment, clicked }
+    return { onChangeTime, title, address, date, description, addAppointment, clicked }
   }
 }
 </script>

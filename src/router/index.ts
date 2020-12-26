@@ -5,7 +5,7 @@ import Tabs from "../views/Tabs.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/tabs/tab1",
+    redirect: "/tabs/appointments",
   },
   {
     path: "/tabs/",
@@ -13,17 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "",
-        redirect: "tab1",
-      },
-      {
-        path: "tab1",
-        component: () => import("@/views/Tab1.vue"),
-        children: [
-          {
-            path: "account",
-            component: () => import("@/views/Account.vue"),
-          },
-        ],
+        redirect: "/tabs/appointments",
       },
       {
         path: "appointments",
@@ -34,15 +24,20 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import("@/views/Add.vue"),
           },
           {
-            path: ":appointmentId",
+            path: "/update/:appointmentId",
             name: 'update',
             component: () => import("@/views/Update.vue"),
           },
+          {
+            path: "/show/:appointmentId",
+            name: 'show',
+            component: () => import("@/views/Show.vue")
+          }
         ],
       },
       {
-        path: "tab3",
-        component: () => import("@/views/Tab3.vue"),
+        path: "Calendar",
+        component: () => import("@/views/Calendar.vue"),
       },
     ],
   },
