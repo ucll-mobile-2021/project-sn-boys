@@ -37,7 +37,9 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "Calendar",
+        name: 'Calendar',
         component: () => import("@/views/Calendar.vue"),
+        props: true
       },
     ],
   },

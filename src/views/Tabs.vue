@@ -8,7 +8,7 @@
           <ion-label>Appointments</ion-label>
         </ion-tab-button>
 
-        <ion-tab-button tab="calendar" href="/tabs/calendar">
+        <ion-tab-button tab="Calendar" href="/tabs/calendar">
           <ion-icon :icon="calendar" />
           <ion-label>Calendar</ion-label>
         </ion-tab-button>
@@ -26,12 +26,14 @@ import {
   IonIcon,
   IonPage
 } from '@ionic/vue'
+import { Appointment } from '../stores/index'
 import { logoStackoverflow, calendar, cog } from 'ionicons/icons'
 
 export default {
   name: 'Tabs',
   components: { IonLabel, IonTabs, IonTabBar, IonTabButton, IonIcon, IonPage },
   setup() {
+   
     return {
       logoStackoverflow,
       calendar,

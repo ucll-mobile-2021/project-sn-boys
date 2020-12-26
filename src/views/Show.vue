@@ -5,7 +5,7 @@
         <ion-buttons slot="start">
           <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>Update appointment</ion-title>
+        <ion-title>Show appointment</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
