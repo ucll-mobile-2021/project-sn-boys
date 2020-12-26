@@ -1,4 +1,4 @@
-<template>
+<template class="test">
   <ion-page>
     <ion-header>
       <ion-toolbar>
@@ -14,7 +14,7 @@
           <ion-title size="large">Appointment</ion-title>
         </ion-toolbar>
       </ion-header>
-      <div v-if="appointments.length > 0">
+      <div class="list" v-if="appointments.length > 0">
         <ion-list v-for="appointment in appointments" :key="appointment.id">
           <ion-grid>
             <ion-row class="ion-align-items-center">
@@ -122,3 +122,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+    .list {
+      margin-bottom: 5%;
+    }
+</style>

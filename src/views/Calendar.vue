@@ -11,9 +11,14 @@
           <ion-title size="large">Calendar</ion-title>
         </ion-toolbar>
       </ion-header>
+        <ion-col size="4">
+          <ion-button @click="prevWeek()" class="ion-margin-start" color="warning">Previous</ion-button>
+          <ion-button @click="nextWeek()" class="ion-margin-start" color="tertiary">Next</ion-button>
+        </ion-col>
       <ion-title>{{mondayDate}} - {{sundayDate}}</ion-title>
-      <div v-if="appointments.length > 0">
+      <div class="list" v-if="appointments.length > 0">
         <ion-list v-for="appointment in appointments" :key="appointment.id">
+          <div v-if="isThisWeek(appointment)">
           <ion-grid>
             <ion-row class="ion-align-items-center">
               <ion-col size="8">
@@ -28,15 +33,12 @@
               </ion-col>
             </ion-row>
           </ion-grid>
+          </div>
         </ion-list>
       </div>
       <div class="ion-padding ion-text-center" v-else>
         <ion-label>No appointments Found</ion-label>
       </div>
-        <ion-col size="4">
-        <ion-button @click="prevWeek()" class="ion-margin-start" color="warning">Previous</ion-button>
-        <ion-button @click="nextWeek()" class="ion-margin-start" color="tertiary">Next</ion-button>
-        </ion-col>
     </ion-content>
   </ion-page>
 </template>
@@ -50,7 +52,7 @@ import {
   IonContent
 } from '@ionic/vue'
 import { Appointment, useMainStore } from '@/stores'
-import { computed, onBeforeMount, ref } from 'vue'
+import { computed, onActivated, onBeforeMount, onRenderTriggered, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 export default {
@@ -75,57 +77,57 @@ setup(){
   const mondayDate = ref('')
   const sundayDate = ref('')
 
+  const lelijkeFix = (date: Date) => {
+    // lelijke fix voor inladen monday/sunday Date, nie kijken aub
+    date.setDate(date.getDate() - (date.getDay()-1)); 
+    date.setHours(0,0,0,0); 
+    
+    mondayDate.value = new Date(date).toLocaleDateString("nl-BE")
+    sundayDate.value = new Date(date.getTime() + 604800000).toLocaleDateString("nl-BE")
+  } 
 
 
-  const isThisWeek = (date: Date) => {
+  const isThisWeek = (appointment: Appointment) => {
+    const date = new Date(appointment.date)
     const lastMonday = new Date(currentWeek); 
     lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay()-1)); 
     lastMonday.setHours(0,0,0,0); 
+
+    lelijkeFix(new Date(currentWeek))
 
     const res = lastMonday.getTime() <= date.getTime() &&
                 date.getTime() < ( lastMonday.getTime() + 604800000);
     return res;
   }
 
-  const loadAppointments = () => {
-    // lelijke fix voor inladen monday/sunday Date, nie kijken aub
-    const lastMonday = new Date(currentWeek); 
-    lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay()-1)); 
-    lastMonday.setHours(0,0,0,0); 
-    
-    mondayDate.value = new Date(lastMonday).toLocaleDateString("nl-BE")
-    sundayDate.value = new Date(lastMonday.getTime() + 604800000).toLocaleDateString("nl-BE")
-
-    appointments.value = []
-    const apps: Appointment[] = store.appointments
-    apps.forEach(app => {
-      if(isThisWeek(new Date(app.date))) appointments.value.push(app)
-    })
-  }
-
   onBeforeMount(() => {
-    loadAppointments()
-  })
+    lelijkeFix(new Date(currentWeek))
+  }) 
 
   const prevWeek = () => {
      currentWeek.setDate(currentWeek.getDate()-7)
-     loadAppointments()
   }
 
   const nextWeek = () => {
     currentWeek.setDate(currentWeek.getDate()+7)
-    loadAppointments()
   }
 
 return {
-  appointments,
+  appointments: computed(() => store.appointments),
   prevWeek,
   nextWeek,
   mondayDate,
-  sundayDate
+  sundayDate,
+  isThisWeek
 }
 }
 }
 
 
 </script>
+
+<style scoped>
+    .list {
+      margin-bottom: 5%;
+    }
+</style>
