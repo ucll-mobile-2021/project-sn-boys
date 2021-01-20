@@ -16,9 +16,8 @@
           <ion-button @click="nextWeek()" class="ion-margin-start" color="tertiary">Next</ion-button>
         </ion-col>
       <ion-title>{{mondayDate}} - {{sundayDate}}</ion-title>
-      <div class="list" v-if="appointments.length > 0">
+      <div class="list" v-if="appointments.length > 0" v-bind="updater">
         <ion-list v-for="appointment in appointments" :key="appointment.id">
-          <div v-if="isThisWeek(appointment)">
           <ion-grid>
             <ion-row class="ion-align-items-center">
               <ion-col size="8">
@@ -33,7 +32,6 @@
               </ion-col>
             </ion-row>
           </ion-grid>
-          </div>
         </ion-list>
       </div>
       <div class="ion-padding ion-text-center" v-else>
@@ -52,7 +50,7 @@ import {
   IonContent
 } from '@ionic/vue'
 import { Appointment, useMainStore } from '@/stores'
-import { computed, onActivated, onBeforeMount, onRenderTriggered, ref } from 'vue'
+import { computed, onActivated, onBeforeMount, onRenderTriggered, onUpdated, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 export default {
@@ -70,22 +68,9 @@ setup(){
   const router = useRouter()
   const store = useMainStore();
 
-  const appointments = ref(store.appointments)
+  let updater = false
 
   const currentWeek = new Date()
-
-  const mondayDate = ref('')
-  const sundayDate = ref('')
-
-  const lelijkeFix = (date: Date) => {
-    // lelijke fix voor inladen monday/sunday Date, nie kijken aub
-    date.setDate(date.getDate() - (date.getDay()-1)); 
-    date.setHours(0,0,0,0); 
-    
-    mondayDate.value = new Date(date).toLocaleDateString("nl-BE")
-    sundayDate.value = new Date(date.getTime() + 604800000).toLocaleDateString("nl-BE")
-  } 
-
 
   const isThisWeek = (appointment: Appointment) => {
     const date = new Date(appointment.date)
@@ -93,32 +78,61 @@ setup(){
     lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay()-1)); 
     lastMonday.setHours(0,0,0,0); 
 
-    lelijkeFix(new Date(currentWeek))
-
     const res = lastMonday.getTime() <= date.getTime() &&
                 date.getTime() < ( lastMonday.getTime() + 604800000);
+
     return res;
   }
 
+  const appointments = ref(store.appointments.filter(isThisWeek))
+
+  const mondayDate = ref('')
+  const sundayDate = ref('')
+
+
+
+  const setDataLimits = (date: Date) => {
+    // lelijke fix voor inladen monday/sunday Date, nie kijken aub
+    date.setDate(date.getDate() - (date.getDay()-1)); 
+    date.setHours(0,0,0,0); 
+    
+    mondayDate.value = new Date(date).toLocaleDateString("nl-BE")
+    sundayDate.value = new Date(date.getTime() + 604800000).toLocaleDateString("nl-BE")
+
+    appointments.value = store.appointments.filter(isThisWeek)
+
+    //werkt met v-bind, zorgt ervoor dat het component re-rendered, weer een dirty fix maar vond niets anders...
+    updater = !updater
+  } 
+
   onBeforeMount(() => {
-    lelijkeFix(new Date(currentWeek))
+    appointments.value = store.appointments.filter(isThisWeek)
+    setDataLimits(new Date(currentWeek))
   }) 
+
+  onUpdated(() => {
+    //reloads the appointments when we re-enter the component
+    appointments.value = store.appointments.filter(isThisWeek)
+  })
 
   const prevWeek = () => {
      currentWeek.setDate(currentWeek.getDate()-7)
+     setDataLimits(currentWeek)
   }
 
   const nextWeek = () => {
     currentWeek.setDate(currentWeek.getDate()+7)
+    setDataLimits(currentWeek)
+    appointments.value = store.appointments.filter(isThisWeek)
   }
 
 return {
-  appointments: computed(() => store.appointments),
+  appointments,
   prevWeek,
   nextWeek,
   mondayDate,
   sundayDate,
-  isThisWeek
+  isThisWeek,
 }
 }
 }
