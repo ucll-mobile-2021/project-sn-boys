@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginActivity">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mobieleapp.homeFragment"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_cameraActivity"
+            app:destination="@id/cameraActivity" />
+    </fragment>
+
+
+    <activity
+        android:id="@+id/cameraActivity"
+        android:name="com.example.mobieleapp.CameraActivity"
+        android:label="activity_camera"
+        tools:layout="@layout/activity_camera" />
+    <activity
+        android:id="@+id/dormActivity"
+        android:name="com.example.mobieleapp.data.database.dorm.DormActivity"
+        android:label="DormActivity"
+        tools:layout="@layout/activity_dorm" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.mobieleapp.loginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+</navigation>
